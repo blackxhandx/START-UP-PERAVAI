@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>TransitGuard AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff8e1;--cd:rgba(255,255,255,.8);--tx:#1b1340;--mu:#6b6392;--bd:rgba(27,19,64,.14);--y:#ffc933;--ink:#1b1340;--rd:#e5304f;--or:#f27b0e;--yl:#d9a400;--pu:#8a3ffc;--gn:#0f9d58;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--bg:#0f0a2a;--cd:rgba(34,26,82,.75);--tx:#f6f2ff;--mu:#a79fd6;--bd:rgba(255,255,255,.14)}}
+:root[data-theme=dark]{color-scheme:dark;--bg:#0f0a2a;--cd:rgba(34,26,82,.75);--tx:#f6f2ff;--mu:#a79fd6;--bd:rgba(255,255,255,.14)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 "Bricolage Grotesque",system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+.bl{position:fixed;border-radius:50%;filter:blur(70px);opacity:.45;z-index:-1;animation:fl 14s ease-in-out infinite alternate}
+.b1{width:340px;height:340px;background:var(--y);top:-80px;left:-60px}.b2{width:300px;height:300px;background:var(--pu);bottom:-60px;right:-40px;animation-delay:-6s}
+@keyframes fl{to{transform:translate(60px,50px) scale(1.15)}}
+#app{max-width:980px;margin:0 auto;padding:14px 16px 90px}
+h1,h2,h3{margin:0;letter-spacing:-.02em}h2{font-size:1.5rem}h3{font-size:1.05rem}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.logo{font-weight:800;font-size:1.25rem;display:flex;gap:8px;align-items:center}.logo i{width:30px;height:30px;border-radius:9px;background:var(--y);color:var(--ink);display:grid;place-items:center;font-style:normal}
+.nav{display:flex;gap:6px;background:var(--cd);border:1px solid var(--bd);padding:5px;border-radius:16px;backdrop-filter:blur(12px);margin-bottom:16px}
+.nav button{flex:1;border:0;background:none;color:var(--mu);font:inherit;font-weight:600;padding:10px 6px;border-radius:12px;cursor:pointer;transition:.25s}
+.nav button.on{background:var(--y);color:var(--ink);transform:translateY(-1px)}
+.cd{background:var(--cd);border:1px solid var(--bd);border-radius:20px;padding:18px;margin-bottom:14px;backdrop-filter:blur(14px)}
+.btn{border:0;background:var(--y);color:var(--ink);font:inherit;font-weight:800;padding:13px 20px;border-radius:14px;cursor:pointer;width:100%;transition:transform .15s,box-shadow .2s}
+.btn:hover{box-shadow:0 8px 24px rgba(255,201,51,.45)}.btn:active{transform:scale(.97)}
+.btn.g{background:none;color:var(--tx);border:1px solid var(--bd)}.btn.s{width:auto;padding:8px 14px;font-size:.85rem}
+label{display:block;font-size:.85rem;color:var(--mu);margin:12px 0 5px;font-weight:600}
+input,select{width:100%;padding:13px 14px;border-radius:13px;border:1.5px solid var(--bd);background:var(--cd);color:var(--tx);font:inherit}
+input:focus,select:focus,button:focus-visible{outline:3px solid var(--y);outline-offset:1px}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:140px}
+.mu{color:var(--mu);font-size:.9rem}
+.tag{font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
+.sim{background:rgba(138,63,252,.18);color:var(--pu)}.live{background:rgba(15,157,88,.18);color:var(--gn)}.exp{background:rgba(242,123,14,.2);color:var(--or)}
+.hero{position:relative;overflow:hidden;border-radius:26px;background:var(--ink);color:#fff;padding:26px 20px 70px;margin-bottom:14px}
+.hero h1{font-size:2.1rem;line-height:1.05;max-width:12ch}.hero p{color:#cfc8ff;max-width:34ch}
+.road{position:absolute;left:0;right:0;bottom:0;height:46px;background:#2a2060}
+.road:before{content:"";position:absolute;left:0;right:0;top:21px;border-top:4px dashed #ffc933;animation:rd 1s linear infinite;width:200%}
+@keyframes rd{to{transform:translateX(-40px)}}
+.bus{position:absolute;bottom:30px;font-size:3rem;animation:dr 7s linear infinite;filter:drop-shadow(0 6px 0 rgba(0,0,0,.3))}
+@keyframes dr{from{left:-70px}to{left:100%}}
+.stop{position:absolute;bottom:46px;right:16px;font-size:1.6rem}
+.seg{display:flex;gap:8px;margin-bottom:6px}.seg button{flex:1;padding:10px;border-radius:12px;border:1.5px solid var(--bd);background:none;color:var(--tx);font:inherit;font-weight:700;cursor:pointer}.seg button.on{background:var(--y);color:var(--ink);border-color:var(--y)}
+.bus-c{cursor:pointer;display:grid;gap:6px;transition:transform .2s,border-color .2s;animation:pop .35s both}.bus-c:hover{transform:translateY(-3px);border-color:var(--y)}
+@keyframes pop{from{opacity:0;transform:scale(.96)}}
+.no{font-weight:800;background:var(--y);color:var(--ink);padding:3px 10px;border-radius:8px;font-size:.85rem;white-space:nowrap}
+.meter{height:9px;border-radius:9px;background:var(--bd);overflow:hidden}.meter b{display:block;height:100%;border-radius:9px;transition:width .8s}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:12px}.big button{padding:22px 12px;border-radius:20px;border:2px solid var(--bd);background:var(--cd);color:var(--tx);font:inherit;font-weight:800;cursor:pointer;font-size:1rem;transition:.25s}.big button:hover{border-color:var(--y);transform:translateY(-4px)}.big span{display:block;font-size:2.2rem}
+.ticket{background:var(--y);color:var(--ink);border-radius:22px;padding:20px;position:relative;animation:pop .5s both}.ticket:after{content:"";position:absolute;left:14px;right:14px;bottom:12px;height:26px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 6px,transparent 6px 10px)}
+.ticket>div:last-child{margin-bottom:34px}
+.modal{position:fixed;inset:0;background:rgba(10,5,30,.6);display:grid;place-items:center;z-index:50;padding:20px;animation:pop .2s}.modal>div{background:var(--bg);border:2px solid var(--rd);border-radius:22px;padding:26px;text-align:center;max-width:340px;animation:shk .4s}
+@keyframes shk{30%{transform:translateX(-8px)}60%{transform:translateX(8px)}}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}.kpi div{background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:14px}.kpi b{font-size:1.9rem;display:block;line-height:1.1}
+table{width:100%;border-collapse:collapse;font-size:.85rem}th,td{padding:9px 6px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}tr.sel{background:rgba(255,201,51,.18)}tbody tr{cursor:pointer}.sc{overflow-x:auto}
+.rk{font-weight:800;padding:2px 10px;border-radius:99px;color:#fff}.r2{background:var(--rd)}.r1{background:var(--or)}.r0{background:var(--gn)}
+.lg{display:flex;flex-wrap:wrap;gap:10px;font-size:.78rem;margin-top:8px}.lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+.pl{animation:pl 1.4s infinite;transform-origin:center;transform-box:fill-box}@keyframes pl{50%{transform:scale(1.7);opacity:.5}}
+.bar{display:flex;align-items:flex-end;gap:10px;height:90px}.bar div{flex:1;border-radius:8px 8px 0 0;background:var(--y);text-align:center;font-size:.7rem;color:var(--ink);font-weight:800}
+input[type=range]{padding:0;accent-color:#ffc933}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><div class="bl b1"></div><div class="bl b2"></div><div id="app"></div>
+<script>
+const mem={};const ls=(k,v)=>{try{if(v===undefined){const x=localStorage.getItem(k);return x?JSON.parse(x):(mem[k]??null)}localStorage.setItem(k,JSON.stringify(v))}catch(e){if(v===undefined)return mem[k]??null;mem[k]=v}};
+const P=s=>s.split(";").map(x=>x.split(","));
+const BUSES=[
+{n:"Koyambedu–Kelambakkam Express",no:"570",oc:78,st:P("Koyambedu CMBT,06:00,06:03;MMDA Colony,06:09,06:10;III Avenue Junction,06:14,06:15;Jaffarkhanpet,06:20,06:21;CIPET,06:25,06:26;Guindy Railway Station,06:32,06:34;Concorde,06:38,06:39;Race Course Road,06:43,06:44;Gurunanak College,06:49,06:50;Velachery,06:56,06:58;IRT Road Junction,07:04,07:05;SRP Tools,07:11,07:12;Kandanchavadi,07:17,07:18;Thoraipakkam,07:23,07:24;Mootakaran Chavadi,07:29,07:30;Karapakkam,07:35,07:36;Sholinganallur,07:42,07:44;Kumaran Nagar,07:49,07:50;Semmenchery,07:56,07:57;Navalur,08:03,08:05;Church,08:11,08:12;Palavasthic Chemicals,08:17,08:18;Hindustan Engineering College,08:23,08:25;Kelambakkam,08:30,")},
+{n:"Koyambedu–Kilambakkam Airport Line",no:"70V",oc:55,st:P("Koyambedu CMBT,,;Guindy Railway Station,,;Airport,,;Tambaram,,;Vandalur,,;Kilambakkam,,")},
+{n:"Kilambakkam–Thiruvanmiyur Link",no:"91",oc:34,st:P("Kilambakkam,06:00,06:03;Vandalur,06:10,06:11;Perungalathur,06:18,06:20;Tambaram,06:28,06:31;Chromepet,06:38,06:39;Pallavaram,06:45,06:47;Airport,06:53,06:54;Thoraipakkam,07:05,07:07;Kandanchavadi,07:13,07:14;Perungudi,07:20,07:22;Adyar,07:28,07:30;Thiruvanmiyur,07:35,")},
+{n:"Thiruvottiyur–Poonamallee Connector",no:"101",oc:62,st:P("Thiruvottiyur,06:00,06:03;Tollgate,06:09,06:10;Royapuram,06:17,06:19;Chennai Central,06:26,06:29;Egmore,06:35,06:37;Aminjikarai,06:45,06:47;Arumbakkam,06:53,06:54;Koyambedu CMBT,07:00,07:03;Maduravoyal,07:12,07:14;Vanagaram,07:21,07:23;Nerkundram,07:29,07:30;Poonamallee,07:40,")},
+{n:"Island Ground–Kelambakkam OMR Line",no:"102",oc:48,st:P("Island Ground,06:00,06:03;Secretariat,06:08,06:09;Chepauk,06:14,06:15;Triplicane,06:20,06:22;Adyar,06:32,06:34;Madhya Kailash,06:39,06:40;Tidel Park,06:46,06:47;SRP Tools,06:53,06:54;Thoraipakkam,07:00,07:02;Karapakkam,07:09,07:10;Sholinganallur,07:16,07:18;Semmenchery,07:25,07:26;Navalur,07:32,07:34;Hindustan Engineering College,07:43,07:45;Kelambakkam,07:50,")}];
+const STOPS=[...new Set(BUSES.flatMap(b=>b.st.map(p=>p[0])))].sort();
+const ROWS=[
+{s:"Velachery",r:"570",w:10,ar:1,m:8,wf:1.1,cap:60,on:45,sch:12,h:10,hist:2,cat:"wait"},
+{s:"Guindy Railway Station",r:"570",w:8,ar:1,m:6,wf:1,cap:60,on:50,sch:10,h:8,hist:0,cat:"late"},
+{s:"Koyambedu CMBT",r:"570",w:20,ar:2,m:10,wf:1.2,cap:60,on:35,sch:8,h:12,hist:1,cat:"wait"},
+{s:"Adyar",r:"91",w:5,ar:.5,m:7,wf:1,cap:60,on:20,sch:9,h:6,hist:0,cat:"ok"},
+{s:"Tambaram",r:"91",w:10,ar:1,m:9,wf:1.3,cap:60,on:48,sch:12,h:15,hist:1,cat:"acc",last:1},
+{s:"Sholinganallur",r:"102",w:9,ar:1,m:8,wf:1,cap:60,on:44,sch:10,h:9,hist:0,cat:"wait"}];
+const COL={fail:"var(--rd)",late:"var(--or)",wait:"var(--yl)",acc:"var(--pu)",ok:"var(--gn)"};
+const CONF={"Koyambedu CMBT|570":1};const REP=[];let sel=0,depot=4;
+function rowIdx(s,r){let i=ROWS.findIndex(x=>x.s==s&&x.r==r);if(i<0){ROWS.push({s,r,w:8,ar:1,m:8,wf:1,cap:60,on:40,sch:10,h:10,hist:0,cat:"ok"});i=ROWS.length-1}return i}
+const mk=(s,r,n,mins,live)=>{for(let i=0;i<n;i++)REP.push({s,r,n:1+(i%3),d:"dev"+s+i,ts:Date.now()-(mins[i%mins.length])*6e4,live:!!live,ty:"COULD NOT BOARD"})};
+mk("Velachery","570",2,[3,6]);mk("Guindy Railway Station","570",2,[4,9]);mk("Koyambedu CMBT","570",4,[2,5,8,11]);mk("Tambaram","91",2,[7,12]);
+function calc(i){const o=ROWS[i],rp=REP.filter(x=>x.s==o.s&&x.r==o.r),rc=rp.filter(x=>Date.now()-x.ts<=9e5);
+const dv=new Set(rc.map(x=>x.d)).size,cf=CONF[o.s+"|"+o.r]?1:0,tr=dv>=3?(cf?2:1):0,left=rp.reduce((a,x)=>a+x.n,0);
+const ew=o.w+left*.5+o.ar*o.m*o.wf,fc=o.cap-o.on,sf=ew-fc,q=sf/ew,risk=q>.3?2:q>.1?1:0;
+return{o,rp,dv,tr,left,ew,fc,sf,risk,cf,ubd:Math.min(100,left/ew*100),spm:left*o.h,rsfs:(o.hist+(tr>0?1:0))/o.sch*100,
+col:(tr>0&&left>0)?COL.fail:COL[o.cat]}}
+const $=s=>document.querySelector(s),app=$("#app"),esc=s=>String(s).replace(/[<>&"]/g,"");
+let U=ls("tg_sess"),tab="ride",auth="in",R={step:1},G={};
+function toast(m){alert(m)}
+function modal(t,m){const d=document.createElement("div");d.className="modal";d.innerHTML=`<div><div style="font-size:3rem">🚫</div><h2 style="color:var(--rd)">${t}</h2><p class="mu">${m}</p><button class="btn">Got it</button></div>`;d.onclick=e=>{if(e.target.tagName=="BUTTON"||e.target==d)d.remove()};document.body.appendChild(d)}
+function theme(){const r=document.documentElement;r.dataset.theme=r.dataset.theme=="dark"?"light":"dark"}
+function render(){app.innerHTML=U?shell():authView()}
+function authView(){const up=auth=="up";return`<div class="hero"><div class="logo" style="color:#fff"><i>T</i>TransitGuard</div><h1 style="margin-top:14px">Your bus. Your seat. Your stop.</h1><p>Find a ride, pick a calmer bus, and tell us when a bus leaves you behind.</p><div class="stop">🚏</div><div class="bus">🚌</div><div class="road"></div></div>
+<div class="cd"><div class="seg"><button class="${up?"":"on"}" onclick="auth='in';render()">Sign in</button><button class="${up?"on":""}" onclick="auth='up';render()">Sign up</button></div>
+<label>Username</label><input id="u" autocomplete="username">
+<label>Password</label><input id="p" type="password" autocomplete="${up?"new-password":"current-password"}">
+${up?`<label>Phone number</label><input id="ph" inputmode="tel" maxlength="10" placeholder="10 digits"><label>Occupation</label><select id="oc"><option>Student</option><option>Office employee</option><option>Business</option><option>Daily wage worker</option><option>Other</option></select>`:""}
+<div style="margin-top:18px"><button class="btn" onclick="doAuth()">${up?"Create account":"Sign in"}</button></div>
+<p class="mu" style="margin:12px 0 0">Demo build: accounts are saved only in this browser.</p></div>`}
+function doAuth(){const u=$("#u").value.trim(),p=$("#p").value,us=ls("tg_users")||{};if(!u||!p)return toast("Enter a username and password.");
+if(auth=="up"){const ph=$("#ph").value.trim();if(!/^\d{10}$/.test(ph))return toast("Enter a valid 10-digit phone number.");if(us[u])return toast("That username is taken. Pick another.");
+us[u]={p,ph,oc:$("#oc").value};ls("tg_users",us);toast("Account created. Sign in with your new details.");auth="in";render()}
+else{if(!us[u]||us[u].p!==p)return toast("Username or password does not match a sign-up.");U=u;ls("tg_sess",u);render()}}
+function out(){U=null;ls("tg_sess","");R={step:1};render()}
+function shell(){return`<div class="top"><div class="logo"><i>T</i>TransitGuard</div><div><button class="btn g s" onclick="theme()" aria-label="Toggle theme">◐</button> <button class="btn g s" onclick="out()">${esc(U)} · Sign out</button></div></div>
+<div class="nav">${[["ride","🚌 Ride"],["rep","📣 Report"],["auth","📊 Authority"]].map(a=>`<button class="${tab==a[0]?"on":""}" onclick="tab='${a[0]}';render()">${a[1]}</button>`).join("")}</div>${tab=="ride"?ride():tab=="rep"?report():authority()}`}
+// ---------- RIDE ----------
+const ALIAS={koyambedu:"Koyambedu CMBT",cmbt:"Koyambedu CMBT",guindy:"Guindy Railway Station"};
+const canon=n=>{const k=n.trim().toLowerCase();return ALIAS[k]||STOPS.find(s=>s.toLowerCase()==k)||n.trim()};
+const stopOpts=`<datalist id="sl">${STOPS.map(s=>`<option value="${s}">`).join("")}</datalist>`;
+const ix=b=>[b.st.findIndex(p=>p[0]==R.p),b.st.findIndex(p=>p[0]==R.d)];
+const mn=t=>+t.slice(0,2)*60+ +t.slice(3,5);
+const bt=(b,a)=>b.st[a][2]||b.st[a][1];
+function match(){const o=[];BUSES.forEach((b,bi)=>{const[a,z]=ix(b);if(a>-1&&z>a)o.push({bi,a,z})});return o}
+const oc=v=>v>70?"var(--rd)":v>50?"var(--or)":"var(--gn)";
+function tm(b,a,z){const t=bt(b,a),e=b.st[z][1];return t?`<div>Boards <b>${t}</b> · arrives <b>${e}</b> · ${mn(e)-mn(t)} min</div>`:`<div class="mu">Timetable not provided for this bus</div>`}
+function ride(){const s=R.step;
+if(s==1)return`<div class="cd"><h2>Where to?</h2><p class="mu">Set your pickup and drop, like a ride app. Start typing a stop name.</p>${stopOpts}
+<label>📍 Pickup location</label><input id="pk" list="sl" value="${esc(R.p||"")}" placeholder="e.g. Velachery">
+<div style="text-align:center;margin-top:8px"><button class="btn g s" onclick="swp()">⇅ Swap</button></div>
+<label>🏁 Drop location</label><input id="dp" list="sl" value="${esc(R.d||"")}" placeholder="e.g. Kelambakkam">
+<div style="margin-top:18px"><button class="btn" onclick="go1()">Continue</button></div></div>`;
+if(s==2)return`<div class="cd"><h2>${esc(R.p)} → ${esc(R.d)}</h2><p class="mu">Do you want to check which buses run on this route?</p><div class="big"><button onclick="R.step=3;render()"><span>🚌</span>Yes, check buses</button><button onclick="cab()"><span>🛺</span>No, just book a ride</button></div></div>`;
+if(s==3){const m=match();return`<div class="cd"><h2>Buses on this route</h2><p class="mu">${esc(R.p)} → ${esc(R.d)} · crowd levels <span class="tag sim">SIMULATED</span></p></div>`+m.map((q,i)=>{const x=BUSES[q.bi];return`<div class="cd bus-c" style="animation-delay:${i*80}ms" onclick="pick(${q.bi})"><div style="display:flex;justify-content:space-between;gap:8px"><h3>${x.n}</h3><span class="no">Bus ${x.no}</span></div><div class="mu">${x.st[0][0]} → ${x.st.at(-1)[0]} · ${q.z-q.a} stops for you</div>${tm(x,q.a,q.z)}<div class="meter"><b style="width:${x.oc}%;background:${oc(x.oc)}"></b></div><div class="mu">${x.oc}% full</div></div>`}).join("")+`<button class="btn g" onclick="R.step=1;render()">Change locations</button>`}
+if(s==4){const x=BUSES[R.b];return`<div class="cd"><h2>How do you want to travel?</h2><p class="mu">${x.n} · Bus ${x.no}</p><div class="big"><button onclick="crowd('non')"><span>🌿</span>Non-crowded bus</button><button onclick="crowd('cr')"><span>🧑‍🤝‍🧑</span>Crowded is fine</button></div></div>`}
+if(s==5){const x=BUSES[R.alt],y=BUSES[R.b];return`<div class="cd"><h2>A calmer bus is available</h2><p>Bus ${y.no} is ${y.oc}% full. Bus ${x.no} (${x.n}) is ${x.oc}% full and also serves ${esc(R.p)} → ${esc(R.d)}.</p>${tm(x,ix(x)[0],ix(x)[1])}<div class="row"><button class="btn" onclick="R.b=R.alt;R.step=6;render()">Switch to Bus ${x.no}</button><button class="btn g" onclick="R.step=6;render()">Keep Bus ${y.no}</button></div></div>`}
+if(s==6){const x=BUSES[R.b],[a,z]=ix(x);return`<div class="ticket"><div style="color:var(--ink)">Your bus is set</div><h2>${x.n}</h2><div><b>Bus ${x.no}</b></div><div>${esc(R.p)} → ${esc(R.d)}</div>${tm(x,a,z)}<div>Preference: ${R.pref=="non"?"Non-crowded":"Crowded is fine"} · ${x.oc}% full <span class="tag sim">SIMULATED</span></div></div><div class="cd" style="margin-top:14px"><p>Bus left without you? Tell the authority so more buses reach this stop.</p><div class="row"><button class="btn" onclick="G.rr=BUSES[R.b].no;G.rs=R.p;tab='rep';render()">Report a full bus</button><button class="btn g" onclick="R={step:1};render()">Plan another trip</button></div></div>`}
+if(s==7)return`<div class="ticket"><h2>🛺 Ride requested</h2><div>${esc(R.p)} → ${esc(R.d)}</div><div>A driver will be assigned shortly (demo).</div></div><div style="margin-top:14px"><button class="btn g" onclick="R={step:1};render()">Plan another trip</button></div>`}
+function swp(){const a=$("#pk").value;$("#pk").value=$("#dp").value;$("#dp").value=a}
+function go1(){const p=$("#pk").value.trim(),d=$("#dp").value.trim();if(!p||!d)return toast("Enter both pickup and drop.");if(canon(p)==canon(d))return toast("Pickup and drop must be different.");R.p=canon(p);R.d=canon(d);R.step=2;render()}
+function cab(){R.step=7;render()}
+function pick(i){R.b=i;R.step=4;render()}
+function crowd(p){R.pref=p;const x=BUSES[R.b];const alt=BUSES.findIndex((a,i)=>{const[s,e]=ix(a);return i!=R.b&&s>-1&&e>s&&a.oc<=55&&a.oc<x.oc});
+if(p=="non"&&x.oc>55&&alt>-1){R.alt=alt;R.step=5}else R.step=6;render()}
+function noBus(){const rev=BUSES.some(b=>{const[a,z]=ix(b);return a>-1&&z>-1&&z<a});modal("NO BUS FOUND",rev?"Buses serving both stops run only in the opposite direction.":"No bus runs between "+esc(R.p)+" and "+esc(R.d)+". Try a nearby stop.")}
+const _r=render;render=function(){_r();if(U&&tab=="ride"&&R.step==3&&!match().length){R.step=2;_r();noBus()}};
+// ---------- REPORT ----------
+function report(){const rt=G.rr||"570",b=BUSES.find(x=>x.no==rt),stp=G.rs&&b.st.some(p=>p[0]==G.rs)?G.rs:b.st[0][0];
+return`<div class="cd"><h2>I could not board</h2><p class="mu">No name or phone number needed. <button class="btn g s" onclick="scan()">📷 Scan stop QR (demo)</button></p>
+<label>Route</label><select onchange="G.rr=this.value;G.rs=null;render()">${BUSES.map(x=>`<option value="${x.no}" ${x.no==rt?"selected":""}>${x.no} · ${x.st[0][0]} → ${x.st.at(-1)[0]}</option>`).join("")}</select>
+<label>Stop</label><select id="rs" onchange="G.rs=this.value">${b.st.map(p=>`<option ${p[0]==stp?"selected":""}>${p[0]}</option>`).join("")}</select>
+<label>Direction</label><select id="rd"><option>Towards ${b.st.at(-1)[0]}</option></select>
+<label>What happened?</label><div class="big" style="grid-template-columns:1fr"><button onclick="send('COULD NOT BOARD')">🚫 I COULD NOT BOARD</button><div class="big"><button onclick="send('BUS IS FULL')">🚌 BUS IS FULL</button><button onclick="send('BUS IS LATE')">⏱ BUS IS LATE</button></div></div>
+<label>Passengers left behind (optional)</label><input id="rn" type="number" min="1" max="99" placeholder="e.g. 5"></div>${G.res||""}`}
+function scan(){G.rr=ROWS[sel].r;G.rs=ROWS[sel].s;toast("Stop name filled from the QR code: "+G.rs);render()}
+function send(ty){const s=$("#rs").value,r=G.rr||"570",n=Math.max(1,+$("#rn").value||1);
+if(REP.some(x=>x.d=="me"&&x.s==s&&x.r==r&&Date.now()-x.ts<6e5))return toast("You already reported this stop and route in the last 10 minutes.");
+REP.push({s,r,n,d:"me",ts:Date.now(),live:true,ty});const i=rowIdx(s,r);sel=i;const c=calc(i);
+const alts=BUSES.filter(b=>b.no!=r&&b.st.some(p=>p[0]==s)).map(b=>{const p=b.st.find(p=>p[0]==s);return "Bus "+b.no+(p[2]||p[1]?" at "+(p[2]||p[1]):"")});
+G.res=`<div class="cd" style="animation:pop .4s"><h3>Report sent <span class="tag live">LIVE</span></h3><p>Trust level for ${esc(s)}: <b>${RN[c.tr]}</b>. The authority sees your report now.</p><p class="mu">Other routes at this stop, from sample data <span class="tag sim">SIMULATED</span>: ${alts.join(" · ")||"none"}</p></div>`;render()}
+// ---------- AUTHORITY ----------
+const RN=["Low","Medium","High"],PER=["Morning peak","Midday","Evening peak","Night"];
+function authority(){const C=ROWS.map((_,i)=>calc(i)),c=C[sel],o=c.o,tot=REP.length,left=C.reduce((a,x)=>a+x.left,0),cfm=C.filter(x=>x.tr==2).length;
+const F=x=>x.toFixed(1);
+const kp=`<div class="kpi"><div><span class="mu">Reports</span><b>${tot}</b></div><div><span class="mu">Estimated left-behind passengers</span><b>${left}</b></div><div><span class="mu">Confirmed events</span><b>${cfm}</b></div></div><p class="mu" style="margin:-6px 0 12px">These three numbers are never added together.</p>`;
+const lg=`<div class="lg"><span><i style="background:var(--rd)"></i>Repeated failed boardings</span><span><i style="background:var(--or)"></i>Repeated delays</span><span><i style="background:var(--yl)"></i>Long waiting</span><span><i style="background:var(--pu)"></i>Accessibility</span><span><i style="background:var(--gn)"></i>Improving</span><span><i style="background:var(--mu)"></i>Not yet monitored</span></div>`;
+const map=BUSES.map(b=>`<p class="mu" style="margin:12px 0 0"><b>Bus ${b.no}</b> · ${b.n}</p><div class="sc"><svg width="${b.st.length*44+130}" height="190"><line x1="25" x2="${b.st.length*44-10}" y1="170" y2="170" stroke="var(--mu)" stroke-width="4"/>${b.st.map((p,i)=>{const k=ROWS.findIndex(x=>x.s==p[0]&&x.r==b.no),cl=k<0?"var(--mu)":C[k].col,x=30+i*44;return`<g onclick="sel=rowIdx('${p[0]}','${b.no}');render()" style="cursor:pointer"><circle class="${cl==COL.fail?"pl":""}" cx="${x}" cy="170" r="12" fill="${cl}"/><circle cx="${x}" cy="170" r="${k==sel?8:5}" fill="#fff" stroke="${cl}" stroke-width="3"/><text transform="translate(${x-4},154) rotate(-45)" font-size="10" fill="currentColor">${p[0]}</text></g>`}).join("")}</svg></div>`).join("")+lg;
+const act=c.risk==2?`Add 2 buses on route ${o.r} before the next peak.`:c.risk==1?`Add 1 bus or shorten the gap on route ${o.r}.`:"No action needed. Keep watching.";
+const det=`<h3>${o.s} · route ${o.r} <span class="tag exp">EXPERIMENTAL</span></h3><p>Trust: <b>${RN[c.tr]}</b> (${c.dv} devices in 15 min${c.cf?", conductor/occupancy confirmed":""}) · Risk: <span class="rk r${c.risk}">${RN[c.risk]}</span></p><p>UBD <b>${F(c.ubd)}%</b> · SPM <b>${Math.round(c.spm)}</b> passenger-min · RSFS <b>${F(c.rsfs)}</b></p><p><b>Recommended:</b> ${act}</p><button class="btn g s" onclick="CONF['${o.s}|${o.r}']=1;render()">Add conductor entry</button> <button class="btn s" onclick="demo()">Demo: 30 reports arrive</button><div class="mu" style="margin-top:8px;max-height:90px;overflow:auto">${c.rp.slice(-6).reverse().map(x=>`${x.ty} · ${x.n} left <span class="tag ${x.live?"live":"sim"}">${x.live?"LIVE":"SIMULATED"}</span>`).join("<br>")}</div>`;
+const tbl=`<div class="sc"><table><thead><tr><th>Route</th><th>Stop</th><th>Risk</th><th>Expected waiting</th><th>Free capacity</th><th>Shortfall</th></tr></thead><tbody>${C.map((x,i)=>`<tr class="${i==sel?"sel":""}" onclick="sel=${i};render()"><td>${x.o.r}</td><td>${x.o.s}</td><td><span class="rk r${x.risk}">${RN[x.risk]}</span></td><td>${Math.round(x.ew)}</td><td>${x.fc}</td><td>${Math.max(0,Math.round(x.sf))}</td></tr>`).join("")}</tbody></table></div><p class="mu">Prediction is EXPERIMENTAL until real data validates it. Capacity and occupancy values are SIMULATED.</p>`;
+const last=C.filter(x=>x.o.last).map(x=>`<p>⚠️ <b>${x.o.s}</b> (${x.o.r}) · last two buses · severity ×1.5 · risk ${RN[Math.min(2,x.risk+1)]}</p>`).join("");
+const dm=`<p class="mu">${o.s}, route ${o.r}: average demand and failures per period <span class="tag sim">SIMULATED</span></p><div class="bar">${[1.8,.8,1.5,.4].map((m,k)=>`<div style="height:${Math.round(m*45)}px">${Math.round((o.w+10)*m)}<br>${[o.hist+c.tr+1,0,o.hist,0][k]}✗</div>`).join("")}</div><div class="bar" style="height:auto;margin-top:4px">${PER.map(p=>`<div style="background:none;color:var(--mu)">${p}</div>`).join("")}</div><p>Pattern: repeated failures in the ${PER[0].toLowerCase()}.</p>`;
+const k=G.k??0,fa=c.fc+k*o.cap*.6,sfa=Math.max(0,c.ew-fa);
+const sim=`<p class="mu">${o.s}, route ${o.r}. Spare buses at depot: ${depot}.</p><label>Add buses: <b>${k}</b></label><input type="range" min="0" max="${depot}" value="${k}" oninput="G.k=+this.value;render()"><div class="sc"><table><tr><th></th><th>Before</th><th>After</th></tr><tr><td>Free capacity</td><td>${c.fc}</td><td>${Math.round(fa)}</td></tr><tr><td>Shortfall</td><td>${Math.max(0,Math.round(c.sf))}</td><td>${Math.round(sfa)}</td></tr><tr><td>UBD</td><td>${F(Math.min(100,Math.max(0,c.sf)/c.ew*100))}%</td><td>${F(sfa/c.ew*100)}%</td></tr><tr><td>SPM</td><td>${Math.round(Math.max(0,c.sf)*o.h)}</td><td>${Math.round(sfa*o.h/(1+k))}</td></tr></table></div><p class="mu">Assumes each added bus carries 60% of its seats for this stop. Not a proven result.</p>`;
+return kp+`<div class="cd"><h3>Service failure map</h3>${map}</div><div class="cd">${det}</div><div class="cd"><h3>Risk table</h3>${tbl}</div><div class="cd"><h3>Last-bus protection</h3>${last||"<p class='mu'>No last-bus risk.</p>"}</div><div class="cd"><h3>Demand memory</h3>${dm}</div><div class="cd"><h3>Intervention simulator</h3>${sim}</div>`}
+function demo(){const o=ROWS[sel];const m=[1,3,5,7,9,11,13];mk(o.s,o.r,30,m);REP.slice(-30).forEach((x,i)=>{x.d="demo"+Date.now()+i;x.live=false});render()}
+render();
+</script></body></html>
